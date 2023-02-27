@@ -1,5 +1,7 @@
 from tkinter import Canvas, Event, Frame, PhotoImage, Tk
 
+from models import Colour, Piece
+
 # fmt: off
 __all__ = [
     'Window'
@@ -30,15 +32,20 @@ class Window(Tk):
 
     def add_piece(
         self,
-        colour: str,
-        piece: str,
+        colour: Colour,
+        piece: Piece,
         row: int,
         column: int,
     ) -> None:
         """
         Add a piece to the board at the given row and column.
+
+        :param colour: The colour of the piece to add.
+        :param piece: The type of piece to add.
+        :param row: The row to add the piece to.
+        :param column: The column to add the piece to.
         """
-        image = PhotoImage(file=f"assets/{colour}_{piece}.png")
+        image = PhotoImage(file=f"assets/{colour.name}_{piece.name}.png")
         self.squares[row][column].create_image(40, 40, image=image)
 
         # Prevent the image from being garbage collected
@@ -57,15 +64,26 @@ class Window(Tk):
                 square.grid(row=row, column=column)
                 self.squares[row].append(square)
 
-        for colour in ("white", "black"):
-            row = 7 if colour == "white" else 0
+        for colour in Colour:
+            row = 7 if colour.name == "white" else 0
 
-            for column, piece in enumerate(("rook", "knight", "bishop", "queen", "king", "bishop", "knight", "rook")):
+            for column, piece in enumerate(
+                (
+                    Piece.rook,
+                    Piece.knight,
+                    Piece.bishop,
+                    Piece.queen,
+                    Piece.king,
+                    Piece.bishop,
+                    Piece.knight,
+                    Piece.rook,
+                )
+            ):
                 self.add_piece(colour, piece, row, column)
 
-            row = 6 if colour == "white" else 1
+            row = 6 if colour.name == "white" else 1
             for column in range(8):
-                self.add_piece(colour, "pawn", row, column)
+                self.add_piece(colour, Piece.pawn, row, column)
 
     def on_click(self, event: Event) -> None:
         # x, y = event.widget.winfo_pointerxy()
