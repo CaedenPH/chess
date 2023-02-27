@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from graphics import Window
+
 # fmt: off
 __all__ = (
     'Game'
@@ -15,8 +17,7 @@ class Game:
     """
 
     def __init__(self) -> None:
-        ...
+        self.window = Window()
 
-    @classmethod
-    def play(cls) -> Game:
-        return cls()
+    def play(self) -> None:
+        self.window.mainloop()
