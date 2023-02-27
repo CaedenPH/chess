@@ -1,9 +1,9 @@
 from tkinter import Canvas, Event, Frame, PhotoImage, Tk
 
 # fmt: off
-__all__ = (
+__all__ = [
     'Window'
-)
+]
 # fmt: on
 
 
