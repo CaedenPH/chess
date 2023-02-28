@@ -1,1 +1,1 @@
-from .board import Colour, Piece
+from .board import ColourType, PieceType

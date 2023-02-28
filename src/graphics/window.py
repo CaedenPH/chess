@@ -1,6 +1,6 @@
 from tkinter import Canvas, Event, Frame, PhotoImage, Tk
 
-from models import Colour, Piece
+from models import ColourType, PieceType
 
 # fmt: off
 __all__ = [
@@ -32,8 +32,8 @@ class Window(Tk):
 
     def add_piece(
         self,
-        colour: Colour,
-        piece: Piece,
+        colour: ColourType,
+        piece: PieceType,
         row: int,
         column: int,
     ) -> None:
@@ -64,26 +64,26 @@ class Window(Tk):
                 square.grid(row=row, column=column)
                 self.squares[row].append(square)
 
-        for colour in Colour:
-            row = 7 if colour.name == "white" else 0
+        for colour in ColourType:
+            row = 7 if colour is ColourType.white else 0
 
             for column, piece in enumerate(
                 (
-                    Piece.rook,
-                    Piece.knight,
-                    Piece.bishop,
-                    Piece.queen,
-                    Piece.king,
-                    Piece.bishop,
-                    Piece.knight,
-                    Piece.rook,
+                    PieceType.rook,
+                    PieceType.knight,
+                    PieceType.bishop,
+                    PieceType.queen,
+                    PieceType.king,
+                    PieceType.bishop,
+                    PieceType.knight,
+                    PieceType.rook,
                 )
             ):
                 self.add_piece(colour, piece, row, column)
 
-            row = 6 if colour.name == "white" else 1
+            row = 6 if colour is ColourType.white else 1
             for column in range(8):
-                self.add_piece(colour, Piece.pawn, row, column)
+                self.add_piece(colour, PieceType.pawn, row, column)
 
     def on_click(self, event: Event) -> None:
         # x, y = event.widget.winfo_pointerxy()
