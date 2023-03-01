@@ -3,14 +3,12 @@ from __future__ import annotations
 from tkinter import Event
 from typing import Literal
 
-from requests import delete
-
 from graphics import Square, Window
 
 # fmt: off
-__all__ = (
+__all__ = [
     'Game'
-)
+]
 # fmt: on
 
 
@@ -43,6 +41,9 @@ class Game:
             if (target.data["row"], target.data["column"]) in data["piece"].available_moves():
                 target.set_piece(data["colour"], data["piece"])
                 square.set_piece(None, None)
+
+                target.data["piece"].column = target.data["column"]
+                target.data["piece"].row = target.data["row"]
 
         self.clicked_square = False
 

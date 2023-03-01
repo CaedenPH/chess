@@ -41,6 +41,8 @@ class Square(Canvas):
         self,
         colour: ColourType | None,
         piece: Union[Rook, Knight, Bishop, Queen, King, Pawn] | None,
+        *,
+        setup: bool = False,
     ) -> None:
         """
         Add a piece to the board at the given row and column.
@@ -51,6 +53,9 @@ class Square(Canvas):
         self.delete("all")
 
         if colour is not None and piece is not None:
+            if not setup:
+                piece.has_moved = True
+
             image = PhotoImage(file=f"assets/{colour.name}_{piece.__class__.__name__}.png")
             self.create_image(40, 40, image=image)
 
@@ -92,8 +97,8 @@ class Window(Tk):
             for column, piece in enumerate(
                 (Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook)
             ):
-                self.squares[row][column].set_piece(colour, piece())
+                self.squares[row][column].set_piece(colour, piece(colour, row, column), setup=True)
 
             row = 6 if colour is ColourType.WHITE else 1
             for column in range(8):
-                self.squares[row][column].set_piece(colour, Pawn())
+                self.squares[row][column].set_piece(colour, Pawn(colour, row, column), setup=True)
