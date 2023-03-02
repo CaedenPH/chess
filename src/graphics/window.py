@@ -1,23 +1,12 @@
 from tkinter import Canvas, Frame, PhotoImage, Tk
 from typing import Any, TypedDict, Union
 
-from pieces import Bishop, ColourType, King, Knight, Pawn, Queen, Rook
-
 # fmt: off
 __all__ = [
-    'SquareData',
     'Square',
     'Window'
 ]
 # fmt: on
-
-
-class SquareData(TypedDict):
-    colour: ColourType | None
-    piece: Union[Rook, Knight, Bishop, Queen, King, Pawn] | None
-    image: PhotoImage | None
-    row: int
-    column: int
 
 
 class Square(Canvas):
@@ -29,7 +18,7 @@ class Square(Canvas):
         super().__init__(*args, **kwargs)
 
         self.grid(row=row, column=column)
-        self.data: SquareData = {
+        self.data = {
             "row": row,
             "column": column,
             "colour": None,
@@ -37,30 +26,30 @@ class Square(Canvas):
             "image": None,
         }
 
-    def set_piece(
-        self,
-        colour: ColourType | None,
-        piece: Union[Rook, Knight, Bishop, Queen, King, Pawn] | None,
-        *,
-        setup: bool = False,
-    ) -> None:
-        """
-        Add a piece to the board at the given row and column.
+    # def set_piece(
+    #     self,
+    #     colour: ColourType | None,
+    #     piece: Union[Rook, Knight, Bishop, Queen, King, Pawn] | None,
+    #     *,
+    #     setup: bool = False,
+    # ) -> None:
+    #     """
+    #     Add a piece to the board at the given row and column.
 
-        :param colour: The colour of the piece to add.
-        :param piece: The type of piece to add.
-        """
-        self.delete("all")
+    #     :param colour: The colour of the piece to add.
+    #     :param piece: The type of piece to add.
+    #     """
+    #     self.delete("all")
 
-        if colour is not None and piece is not None:
-            if not setup:
-                piece.has_moved = True
+    #     if colour is not None and piece is not None:
+    #         if not setup:
+    #             piece.has_moved = True
 
-            image = PhotoImage(file=f"assets/{colour.name}_{piece.__class__.__name__}.png")
-            self.create_image(40, 40, image=image)
+    #         image = PhotoImage(file=f"assets/{colour.name}_{piece.__class__.__name__}.png")
+    #         self.create_image(40, 40, image=image)
 
-            self.data["image"] = image  # Stop image being garbage collected
-        self.data.update({"colour": colour, "piece": piece})
+    #         self.data["image"] = image  # Stop image being garbage collected
+    #     self.data.update({"colour": colour, "piece": piece})
 
 
 class Window(Tk):
@@ -84,21 +73,21 @@ class Window(Tk):
         Create alternating black and white squares for pieces to be placed on.
         Then place pieces according to the starting position.
         """
-        for row in range(8):
-            for column in range(8):
-                colour = "white" if (row + column) % 2 == 0 else "grey"
+        # for row in range(8):
+        #     for column in range(8):
+        #         colour = "white" if (row + column) % 2 == 0 else "grey"
 
-                square = Square(self, row=row, column=column, width=77, height=77, bg=colour)  # type: ignore
-                self.squares[row].append(square)
+        #         square = Square(self, row=row, column=column, width=77, height=77, bg=colour)  # type: ignore
+        #         self.squares[row].append(square)
 
-        for colour in ColourType:
-            row = 7 if colour is ColourType.WHITE else 0
+        # for colour in ColourType:
+        #     row = 7 if colour is ColourType.WHITE else 0
 
-            for column, piece in enumerate(
-                (Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook)
-            ):
-                self.squares[row][column].set_piece(colour, piece(colour, row, column), setup=True)
+        #     for column, piece in enumerate(
+        #         (Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook)
+        #     ):
+        #         ... # TODO: Add piece to board
 
-            row = 6 if colour is ColourType.WHITE else 1
-            for column in range(8):
-                self.squares[row][column].set_piece(colour, Pawn(colour, row, column), setup=True)
+        #     row = 6 if colour is ColourType.WHITE else 1
+        #     for column in range(8):
+        #         ... # TODO: Add pawn to board
